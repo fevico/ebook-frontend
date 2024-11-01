@@ -7,7 +7,6 @@ interface Props{}
 const NewBookForm: FC<Props> = () =>{
     const handleSubmit = async(data: FormData) =>{
       const res = await client.post('/book/create', data)
-        console.log(res.data)
     }
 return <BookForm onSubmit={handleSubmit} title='Publish a new book' submitBtnTitle='Publish a new book'/>;
 };
