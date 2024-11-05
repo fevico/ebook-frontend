@@ -47,6 +47,8 @@ const App: FC<Props> = () => {
       <Route path="/sign-up" element={<SignUp />} />
       </Route>
 
+      <Route path="*" element={<NotFound />} />
+
     </Routes>
     <Toaster/>
     </Container>

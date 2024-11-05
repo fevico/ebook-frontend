@@ -32,3 +32,20 @@ export const parseError = (error: unknown) => {
      toast("Something went wrong, please try again later", {position: "top-right"})
 
 }
+
+export const calculateDiscount = (price: {mrp: string, sale: string}) => {
+    const {mrp, sale} = price
+    const mrpNumber = Number(mrp)
+    const saleNumber = Number(sale)
+
+   return Math.round(((mrpNumber - saleNumber) / mrpNumber) * 100)
+}
+
+export const formatPrice = (amount: number) => {
+   const formatter =  new Intl.NumberFormat("en-US", {
+        style: "currency",
+        currency: "USD",
+    })
+   return  formatter.format(amount)
+
+}
