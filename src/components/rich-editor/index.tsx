@@ -7,6 +7,7 @@ import Tools from './Tools';
 
 
 interface Props{
+  className?: string
     value?: string
     onChange?(html: string): void
     editable?: boolean
@@ -33,7 +34,7 @@ const extensions = [StarterKit.configure({
 
 let loaded = false
 
-const RichEditor: FC<Props> = ({placeholder, isInvalid, errorMessage, value, editable, onChange}) =>{
+const RichEditor: FC<Props> = ({placeholder, className, isInvalid, errorMessage, value, editable, onChange}) =>{
    const editor = useEditor({
     extensions: [
         ...extensions,
@@ -58,7 +59,7 @@ const RichEditor: FC<Props> = ({placeholder, isInvalid, errorMessage, value, edi
 
 return <div className={clsx(isInvalid && "ring-2 ring-red-400 p-2 rounded-medium")}>
     <Tools editor={editor} visible={editable}/>
-    <EditorContent editor={editor}/>
+    <EditorContent editor={editor} className={className}/>
 
     {errorMessage}
 </div>;

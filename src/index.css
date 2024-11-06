@@ -32,6 +32,14 @@
     border-radius: 12px;
     background: #f6f6f6;
   }
+
+  .regular .tiptap {
+    outline: none;
+    padding: 0px;
+    border: none;
+    border-radius: 0px;
+    background: transparent;
+  }
   
   .remove-default-tiptap .tiptap {
     outline: none;
