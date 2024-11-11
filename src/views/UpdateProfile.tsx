@@ -10,6 +10,7 @@ interface Props {}
 const UpdateProfile: FC<Props> = () => {
     const dispatch = useDispatch()
   const { profile } = useAuth();
+  
   const handleSubmit = async (formData: FormData) => {
    const {data} = await client.put("/auth/profile", formData);
    dispatch(updateProfile(data.profile))

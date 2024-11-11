@@ -2,9 +2,16 @@ import { FC } from "react";
 import { Link } from "react-router-dom";
 import { calculateDiscount, formatPrice } from "../utils/helper";
 import { Button, Chip, Divider } from "@nextui-org/react";
-import { FaEarthAfrica, FaMasksTheater, FaRegCalendarDays, FaRegFileLines, FaStar } from "react-icons/fa6";
+import {
+  FaEarthAfrica,
+  FaMasksTheater,
+  FaRegCalendarDays,
+  FaRegFileLines,
+  FaStar,
+} from "react-icons/fa6";
 import RichEditor from "./rich-editor";
 import { TbShoppingCartPlus } from "react-icons/tb";
+import useCart from "../hooks/useCart";
 
 export interface Book {
   id: string;
@@ -37,9 +44,28 @@ interface Props {
 }
 
 const BookDetails: FC<Props> = ({ book }) => {
+ const {updateCart, pending} = useCart()
   if (!book) return null;
-  const alreadyPurchased = false
-  const { cover, id, title, slug, author, description, language, fileInfo, genre, publishedAt, rating, publicationName, price } = book;
+  const alreadyPurchased = false;
+  
+  const handleCartUpdate = () => {
+    updateCart({ product: book, quantity: 1 });
+  };
+  const {
+    cover,
+    id,
+    title,
+    slug,
+    author,
+    description,
+    language,
+    fileInfo,
+    genre,
+    publishedAt,
+    rating,
+    publicationName,
+    price,
+  } = book;
   return (
     <div className="md:flex">
       <div>
@@ -72,9 +98,7 @@ const BookDetails: FC<Props> = ({ book }) => {
           {rating ? (
             <Chip color="danger">
               <div className="flex space-x-1 items-center">
-                <span>
-                  {rating}
-                </span>
+                <span>{rating}</span>
                 <FaStar />
               </div>
             </Chip>
@@ -83,44 +107,59 @@ const BookDetails: FC<Props> = ({ book }) => {
               <span className="text-xs">No Ratings</span>
             </Chip>
           )}
-          <Link to={`/rate/${id}`} className="font-normal text-sm hover:underline">Add Review</Link>
+          <Link
+            to={`/rate/${id}`}
+            className="font-normal text-sm hover:underline"
+          >
+            Add Review
+          </Link>
         </div>
         <div className="mt-6">
-            <RichEditor value={description} className="regular"/>
+          <RichEditor value={description} className="regular" />
         </div>
 
         <div className="flex items-center space-x-6 mt-6 h-10">
-            <div className="flex flex-col items-center justify-center space-y-1">
-                <FaEarthAfrica className="sm:text-2xl text-xl"/>
-                <span className="sm:text-xs text-[10px] truncate">{language}</span>
-            </div>
-            <Divider orientation="vertical" className="h-1/2"/>
+          <div className="flex flex-col items-center justify-center space-y-1">
+            <FaEarthAfrica className="sm:text-2xl text-xl" />
+            <span className="sm:text-xs text-[10px] truncate">{language}</span>
+          </div>
+          <Divider orientation="vertical" className="h-1/2" />
 
-            <div className="flex flex-col items-center justify-center space-y-1">
-                <FaMasksTheater className="sm:text-2xl text-xl"/>
-                <span className="sm:text-xs text-[10px] truncate">{genre}</span>
-            </div>
-            <Divider orientation="vertical" className="h-1/2"/>
+          <div className="flex flex-col items-center justify-center space-y-1">
+            <FaMasksTheater className="sm:text-2xl text-xl" />
+            <span className="sm:text-xs text-[10px] truncate">{genre}</span>
+          </div>
+          <Divider orientation="vertical" className="h-1/2" />
 
-            <div className="flex flex-col items-center justify-center space-y-1">
-                <FaRegFileLines className="sm:text-2xl text-xl"/>
-                <span className="sm:text-xs text-[10px] truncate">{fileInfo.size}</span>
-            </div>
-            <Divider orientation="vertical" className="h-1/2"/>
+          <div className="flex flex-col items-center justify-center space-y-1">
+            <FaRegFileLines className="sm:text-2xl text-xl" />
+            <span className="sm:text-xs text-[10px] truncate">
+              {fileInfo.size}
+            </span>
+          </div>
+          <Divider orientation="vertical" className="h-1/2" />
 
-            <div className="flex flex-col items-center justify-center space-y-1">
-                <FaRegCalendarDays className="sm:text-2xl text-xl"/>
-                <span className="sm:text-xs text-[10px] truncate">{publishedAt}</span>
-            </div>
+          <div className="flex flex-col items-center justify-center space-y-1">
+            <FaRegCalendarDays className="sm:text-2xl text-xl" />
+            <span className="sm:text-xs text-[10px] truncate">
+              {publishedAt}
+            </span>
+          </div>
         </div>
 
         <div className="flex items-center mt-6 space-x-3">
-          {alreadyPurchased ? <Button radius="sm" as={Link} to={`/read/${slug}`}>Read Now</Button> :
-          <>
-          <Button variant="light" startContent={<TbShoppingCartPlus/>}>Add to Cart</Button>
-          <Button variant="flat">Buy Now</Button>
-          </> 
-          }
+          {alreadyPurchased ? (
+            <Button radius="sm" as={Link} to={`/read/${slug}`}>
+              Read Now
+            </Button>
+          ) : (
+            <>
+              <Button isLoading={pending} onClick={handleCartUpdate} variant="light" startContent={<TbShoppingCartPlus />}>
+                Add to Cart
+              </Button>
+              <Button isLoading={pending} variant="flat">Buy Now</Button>
+            </>
+          )}
         </div>
       </div>
     </div>

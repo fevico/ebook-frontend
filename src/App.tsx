@@ -17,6 +17,7 @@ import UpdateAuthor from "./views/UpdateAuthor";
 import Author from "./routes/Author";
 import NotFound from "./views/NotFound";
 import SingleBook from "./views/SingleBook";
+import Cart from "./views/Cart";
 
 interface Props {}
 
@@ -28,6 +29,7 @@ const App: FC<Props> = () => {
     <Route path="/book/:slug" element={<SingleBook />} />
     <Route path="/verify" element={<Verify />} />
     <Route path="/not-found" element={<NotFound />} />
+    <Route path="/cart" element={<Cart />} />
 
       <Route element={<Private/>} >
       <Route path="/profile" element={<Profile />} />
