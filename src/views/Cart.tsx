@@ -13,6 +13,7 @@ const Cart: FC<Props> = () => {
   const [busy, setBusy] = useState(false)
   const { updateCart, id, clearCart, pending,totalCount, items, fetching, subTotal, totalPrice } =
     useCart();
+    
     const handleCheckout = async() =>{
       try {
         setBusy(true)

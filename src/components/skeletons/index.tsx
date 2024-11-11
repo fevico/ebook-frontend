@@ -1,11 +1,15 @@
 import BookDetails from "./BookDetail";
 import BookList from "./BookList";
 import Cart from "./Cart";
+import Orders from "./Orders";
+import Payment from "./Payment";
 
 const Skeletons = {
     BookList,
     BookDetails,
-    Cart
+    Cart,
+    Payment,
+    Orders
 }
 
 export default Skeletons;
