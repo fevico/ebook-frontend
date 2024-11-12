@@ -46,7 +46,7 @@ const RichEditor: FC<Props> = ({placeholder, className, isInvalid, errorMessage,
    })
 
    useEffect(() => {
-    if(loaded) return 
+    if(loaded && editable) return 
     if (editor && !editable) {
       editor.setEditable(false);
     }
@@ -55,7 +55,13 @@ const RichEditor: FC<Props> = ({placeholder, className, isInvalid, errorMessage,
       editor.commands.setContent(value);
       loaded = true
     }
-  }, [editor, value, editable]);
+    }, [editor, value, editable]);
+
+    useEffect(() => {
+      return () => {
+        loaded = false
+      }
+    }, [])
 
 return <div className={clsx(isInvalid && "ring-2 ring-red-400 p-2 rounded-medium")}>
     <Tools editor={editor} visible={editable}/>
