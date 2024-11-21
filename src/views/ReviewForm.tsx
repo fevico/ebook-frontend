@@ -54,6 +54,7 @@ const ReviewForm: FC<Props> = () => {
     }
     fetchReview()
   }, [bookId])
+  
   if(fetching) return <div className="text-center p-5"><p>Please wait...</p></div>
   return (
     <form onSubmit={handleSubmit} className="p-5 space-y-6">

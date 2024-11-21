@@ -56,7 +56,7 @@ return <div className='space-y-6 px-5 py-10'>
                 </Link>
                 </div>
                 <div>
-                    <Button as={Link} to={`/read/${book.slug}`} radius='sm'>Read Now</Button>
+                    <Button as={Link} to={`/read/${book.slug}?title=${book.title}&id=${book.id}`} radius='sm'>Read Now</Button>
                 </div>
             </div>
         </div>

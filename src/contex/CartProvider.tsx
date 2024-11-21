@@ -12,6 +12,7 @@ import useAuth from "../hooks/UseAuth";
 import client from "../api/Client";
 import toast from "react-hot-toast";
 import { parseError } from "../utils/helper";
+import { AxiosError } from "axios";
 
 interface CartApiResponse {
   cart: {
@@ -46,19 +47,19 @@ export const CartContext = createContext<ICartContext>({
   updateCart() {},
   clearCart() {},
 });
-const CART_KEY = "cartItems"
+const CART_KEY = "cartItems";
 const updateCartInLS = (cart: cartItem[]) => {
-  localStorage.setItem(CART_KEY, JSON.stringify(cart))
-}
+  localStorage.setItem(CART_KEY, JSON.stringify(cart));
+};
 
-let startLSUpdate = false
+let startLSUpdate = false;
 
 const CartProvider: FC<Props> = ({ children }) => {
   const cart = useSelector(getCartState);
   const dispatch = useDispatch();
   const { profile } = useAuth();
   const [pending, setPending] = useState(false);
-  const [fetching, setFetching] = useState(true); 
+  const [fetching, setFetching] = useState(true);
 
   const clearCart = () => {
     dispatch(updateCartState({ items: [], id: "" }));
@@ -77,10 +78,10 @@ const CartProvider: FC<Props> = ({ children }) => {
   };
 
   const updateCart = (item: cartItem) => {
-    startLSUpdate = true
+    startLSUpdate = true;
     // update UI
     dispatch(updateCartItems(item));
-    
+
     if (profile) {
       // update the server
       // check if user is logged in
@@ -99,26 +100,28 @@ const CartProvider: FC<Props> = ({ children }) => {
   };
 
   useEffect(() => {
-    if(startLSUpdate && !profile){
-      updateCartInLS(cart.items)
+    if (startLSUpdate && !profile) {
+      updateCartInLS(cart.items);
     }
-  }, [cart.items, profile])
+  }, [cart.items, profile]);
 
   useEffect(() => {
     const fetchCartInfo = async () => {
-      if(!profile){
-       const result = localStorage.getItem(CART_KEY)
-       if(result){
-        dispatch(updateCartState({items: JSON.parse(result)}))
+      if (!profile) {
+        const result = localStorage.getItem(CART_KEY);
+        if (result) {
+          dispatch(updateCartState({ items: JSON.parse(result) }));
+        }
+        return setFetching(false);
       }
-      return setFetching(false);
-
-    }
       try {
         const { data } = await client.get<CartApiResponse>("/cart");
         dispatch(updateCartState({ id: data.cart.id, items: data.cart.items }));
       } catch (error) {
-        parseError(error);
+        if (error instanceof AxiosError) {
+          if (error.response?.status === 404) return;
+          parseError(error);
+        }
       } finally {
         setFetching(false);
       }
@@ -137,7 +140,7 @@ const CartProvider: FC<Props> = ({ children }) => {
         pending,
         totalCount: cart.totalCount,
         updateCart,
-        clearCart
+        clearCart,
       }}
     >
       {children}

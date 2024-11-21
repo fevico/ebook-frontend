@@ -49,3 +49,15 @@ export const formatPrice = (amount: number) => {
    return  formatter.format(amount)
 
 }
+
+export const debounce = <T extends unknown[]>(func: (...args: T) => void, time: number) => {
+    let timeoutId: number;
+    return (...args: T) => {
+        // clearing previous timeout and setting new timeout
+        clearTimeout(timeoutId)
+        // register the new timeout 
+       timeoutId = setTimeout(() =>{
+            func(...args)
+        }, time)
+    }
+}
