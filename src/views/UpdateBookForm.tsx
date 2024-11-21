@@ -15,6 +15,7 @@ const UpdateBookForm: FC<Props> = () => {
 
   const handleSubmit = async(data: FormData) =>{
     const res = await client.patch('/book', data)
+    if(res.data)
     toast("Book updated successfully", {duration: 5000})
   }
 
