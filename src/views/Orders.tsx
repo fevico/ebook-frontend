@@ -47,6 +47,15 @@ const Orders: FC<Props> = () => {
   }, []);
 
   if (pending) return <Skeletons.Orders />;
+  if (!orders?.length)
+    return (
+      <div className="p-5 lg:p-0">
+      <h1 className="text-xl font-semibold mb-6">Your Orders</h1>
+      <div className="text-center pt-10 animate-pulse">
+        <p>{"You don't have any orders!"}</p>
+      </div>
+      </div>
+    );
   return (
     <div className="p-5 lg:p-0">
       <h1 className="text-xl font-semibold mb-6">Your Orders</h1>
